@@ -82,6 +82,61 @@ export function hash160(data: Uint8Array): Uint8Array {
     const s256 = sha256(data)
     return ripemd160(s256)
 }
+// ==============================
+// Digital Signature
+// ==============================
+
+export function signMessage(message: string, privateKeyHex: string): string {
+    // SHA256(UTF-8(message))
+    const msgHash = sha256(utf8ToBytes(message))
+
+    // 將 privateKeyHex 轉成 Uint8Array
+    const privateKey = hexToBytes(privateKeyHex)
+
+    // secp256k1 compact signature (64 bytes: r || s)
+    const signature = secp.sign(msgHash, privateKey)
+
+    return bytesToHex(signature)
+}
+
+export function verifySignature(
+    message: string,
+    signatureHex: string,
+    publicKeyHex: string
+): boolean {
+    const msgHash = sha256(utf8ToBytes(message))
+
+    const signature = hexToBytes(signatureHex)
+    const publicKey = hexToBytes(publicKeyHex)
+
+    return secp.verify(signature, msgHash, publicKey)
+}
+
+// ==============================
+// Helpers (local)
+// ==============================
+
+function utf8ToBytes(str: string): Uint8Array {
+    return new TextEncoder().encode(str)
+}
+
+function hexToBytes(hex: string): Uint8Array {
+    const normalized = hex.trim().toLowerCase()
+    if (normalized.length % 2 !== 0) {
+        throw new Error("hex string must have even length")
+    }
+
+    const out = new Uint8Array(normalized.length / 2)
+    for (let i = 0; i < out.length; i += 1) {
+        const byte = normalized.slice(i * 2, i * 2 + 2)
+        const value = Number.parseInt(byte, 16)
+        if (Number.isNaN(value)) {
+            throw new Error("invalid hex string")
+        }
+        out[i] = value
+    }
+    return out
+}
 
 function bytesToHex(bytes: Uint8Array): string {
     let out = ""

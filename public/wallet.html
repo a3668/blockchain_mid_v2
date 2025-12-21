@@ -19,6 +19,9 @@
                 <div class="container">
                     <h1>Wallet（私鑰 → 公鑰 → 地址）</h1>
 
+                    <!-- ===================== -->
+                    <!-- Demo 1：Key Generation -->
+                    <!-- ===================== -->
                     <div class="controls">
                         <input
                             id="walletLabel"
@@ -64,6 +67,57 @@
                             <div class="block-header">Private Key (hex)</div>
                             <div class="block-hash" id="walletPrivKey"></div>
                         </div>
+                    </div>
+
+                    <!-- ===================== -->
+                    <!-- Demo 2：Digital Signature -->
+                    <!-- ===================== -->
+                    <h1 style="margin-top: 48px">Digital Signature</h1>
+
+                    <!-- 簽名 -->
+                    <h2>Sign Message</h2>
+                    <div class="controls">
+                        <textarea
+                            id="signMessage"
+                            rows="3"
+                            placeholder="輸入要簽名的訊息"
+                        ></textarea>
+
+                        <button id="signBtn">Sign</button>
+                    </div>
+
+                    <div class="block-card">
+                        <div class="block-header">Signature (hex)</div>
+                        <div class="block-hash" id="signatureResult"></div>
+                    </div>
+
+                    <!-- 驗證 -->
+                    <h2>Verify Signature</h2>
+                    <div class="controls">
+                        <textarea
+                            id="verifyMessage"
+                            rows="3"
+                            placeholder="訊息（預設與簽名相同）"
+                        ></textarea>
+
+                        <input
+                            id="verifySignature"
+                            type="text"
+                            placeholder="Signature (hex)"
+                        />
+
+                        <input
+                            id="verifyPublicKey"
+                            type="text"
+                            placeholder="Public Key (hex，預設使用上方產生的公鑰)"
+                        />
+
+                        <button id="verifyBtn">Verify</button>
+                    </div>
+
+                    <div class="block-card">
+                        <div class="block-header">Verify Result</div>
+                        <div class="block-hash" id="verifyResult"></div>
                     </div>
                 </div>
             </section>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Sign / Verify Demo</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+
+    <body data-page="sign">
+        <!-- Navbar -->
+        <header class="navbar">
+            <div class="nav-brand">Wallet Demo</div>
+            <nav class="nav-links">
+                <a class="nav-link" href="/">回到區塊鏈</a>
+                <a class="nav-link" href="/wallet.html">Wallet</a>
+                <a class="nav-link active" href="/sign.html">Sign & Verify</a>
+            </nav>
+        </header>
+
+        <main class="main">
+            <section class="section active">
+                <div class="container">
+                    <h1>Sign & Verify</h1>
+
+                    <!-- ===================== -->
+                    <!-- 區塊 1：簽名區 -->
+                    <!-- ===================== -->
+                    <h2>簽名</h2>
+
+                    <div class="controls">
+                        <!-- 訊息輸入 -->
+                        <textarea
+                            id="signMessage"
+                            rows="4"
+                            placeholder="輸入要簽名的訊息"
+                        ></textarea>
+
+                        <!-- 私鑰輸入（示範用） -->
+                        <input
+                            id="signPrivateKey"
+                            type="password"
+                            placeholder="Private Key（demo only）"
+                        />
+
+                        <!-- 警語 -->
+                        <p class="warning">僅示範用途，請勿輸入真實私鑰</p>
+
+                        <!-- 簽名按鈕 -->
+                        <button id="signBtn">Sign</button>
+                    </div>
+
+                    <!-- 簽名結果 -->
+                    <div class="block-card">
+                        <div class="block-header">Signature (hex)</div>
+                        <div class="block-hash" id="signResult"></div>
+                    </div>
+
+                    <!-- ===================== -->
+                    <!-- 區塊 2：驗證區 -->
+                    <!-- ===================== -->
+                    <h2>驗證</h2>
+
+                    <div class="controls">
+                        <!-- 驗證用訊息 -->
+                        <textarea
+                            id="verifyMessage"
+                            rows="3"
+                            placeholder="輸入要驗證的訊息"
+                        ></textarea>
+
+                        <!-- 簽名 -->
+                        <input
+                            id="verifySignature"
+                            type="text"
+                            placeholder="Signature (hex)"
+                        />
+
+                        <!-- 公開金鑰 -->
+                        <input
+                            id="verifyPublicKey"
+                            type="text"
+                            placeholder="Public Key (hex)"
+                        />
+
+                        <!-- 驗證按鈕 -->
+                        <button id="verifyBtn">Verify</button>
+                    </div>
+
+                    <!-- 驗證結果 -->
+                    <div class="block-card">
+                        <div class="block-header">Verify Result</div>
+                        <div class="block-hash" id="verifyResult"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 共用同一支 app.js -->
+        <script src="app.js"></script>
+    </body>
+</html>

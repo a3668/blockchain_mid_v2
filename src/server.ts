@@ -2,10 +2,13 @@
 
 import { Blockchain } from "./blockchain.ts"
 import { Block } from "./block.ts"
-import { createWallet } from "./wallet.ts"
+import { createWallet, signMessage, verifySignature } from "./wallet.ts"
+import * as secp from "@noble/secp256k1"
+import type { Wallet } from "./wallet.ts"
 
 const blockchain = new Blockchain()
 const port = 8000
+let currentWallet: Wallet | null = null
 
 function jsonResponse(body: unknown, init?: ResponseInit): Response {
     return new Response(JSON.stringify(body), {
@@ -15,6 +18,31 @@ function jsonResponse(body: unknown, init?: ResponseInit): Response {
             ...(init?.headers ?? {})
         }
     })
+}
+function bytesToHex(bytes: Uint8Array): string {
+    let out = ""
+    for (let i = 0; i < bytes.length; i += 1) {
+        out += bytes[i]!.toString(16).padStart(2, "0")
+    }
+    return out
+}
+
+function hexToBytes(hex: string): Uint8Array {
+    const normalized = hex.trim().toLowerCase()
+    if (normalized.length % 2 !== 0) {
+        throw new Error("hex string must have even length")
+    }
+
+    const out = new Uint8Array(normalized.length / 2)
+    for (let i = 0; i < out.length; i += 1) {
+        const byte = normalized.slice(i * 2, i * 2 + 2)
+        const value = Number.parseInt(byte, 16)
+        if (Number.isNaN(value)) {
+            throw new Error("invalid hex string")
+        }
+        out[i] = value
+    }
+    return out
 }
 
 Deno.serve({ port }, async (req) => {
@@ -78,6 +106,7 @@ Deno.serve({ port }, async (req) => {
         const includePrivate = url.searchParams.get("includePrivate") === "1"
 
         const wallet = createWallet(label, network)
+        currentWallet = wallet
 
         const resp: Record<string, unknown> = {
             label: wallet.label,
@@ -92,6 +121,102 @@ Deno.serve({ port }, async (req) => {
         }
 
         return jsonResponse(resp, { status: 200 })
+    }
+    // wallet sign
+    // wallet sign (server holds the private key)
+    if (url.pathname === "/wallet/sign" && req.method === "POST") {
+        if (!currentWallet) {
+            return jsonResponse(
+                { error: "wallet not initialized" },
+                { status: 400 }
+            )
+        }
+
+        let body: Record<string, unknown> = {}
+        try {
+            const parsed: unknown = await req.json()
+            if (
+                parsed !== null &&
+                typeof parsed === "object" &&
+                !Array.isArray(parsed)
+            ) {
+                body = parsed as Record<string, unknown>
+            } else {
+                body = {}
+            }
+        } catch {
+            body = {}
+        }
+
+        const message = typeof body.message === "string" ? body.message : ""
+
+        if (!message) {
+            return jsonResponse(
+                { error: "message is required" },
+                { status: 400 }
+            )
+        }
+
+        try {
+            const signatureHex = signMessage(
+                message,
+                currentWallet.privateKeyHex
+            )
+
+            return jsonResponse(
+                {
+                    signatureHex,
+                    publicKeyCompressedHex: currentWallet.publicKeyCompressedHex
+                },
+                { status: 200 }
+            )
+        } catch (err) {
+            console.error(err)
+            return jsonResponse({ error: "sign failed" }, { status: 400 })
+        }
+    }
+
+    // wallet verify
+    if (url.pathname === "/wallet/verify" && req.method === "POST") {
+        let body: Record<string, unknown> = {}
+        try {
+            const parsed: unknown = await req.json()
+            if (
+                parsed !== null &&
+                typeof parsed === "object" &&
+                !Array.isArray(parsed)
+            ) {
+                body = parsed as Record<string, unknown>
+            } else {
+                body = {}
+            }
+        } catch {
+            body = {}
+        }
+
+        const message = typeof body.message === "string" ? body.message : ""
+        const signatureHex =
+            typeof body.signatureHex === "string" ? body.signatureHex : ""
+        const publicKeyHex =
+            typeof body.publicKeyHex === "string" ? body.publicKeyHex : ""
+
+        if (!message || !signatureHex || !publicKeyHex) {
+            return jsonResponse(
+                { error: "message, signatureHex, publicKeyHex are required" },
+                { status: 400 }
+            )
+        }
+
+        try {
+            const valid = verifySignature(message, signatureHex, publicKeyHex)
+            return jsonResponse({ valid }, { status: 200 })
+        } catch (err) {
+            console.error(err)
+            return jsonResponse(
+                { error: "invalid input or verify failed" },
+                { status: 400 }
+            )
+        }
     }
 
     // ---------- Static files (public/) ----------

@@ -139,6 +139,112 @@ function initWalletPage() {
     btn.addEventListener("click", () => {
         createWalletFromServer()
     })
+    // 新增：Digital Signature demo
+    initSignDemo()
+}
+
+// sign
+function initSignDemo() {
+    const signMessageInput = document.getElementById("signMessage")
+    const signBtn = document.getElementById("signBtn")
+    const signatureResult = document.getElementById("signatureResult")
+
+    const verifyMessageInput = document.getElementById("verifyMessage")
+    const verifySignatureInput = document.getElementById("verifySignature")
+    const verifyPublicKeyInput = document.getElementById("verifyPublicKey")
+    const verifyBtn = document.getElementById("verifyBtn")
+    const verifyResult = document.getElementById("verifyResult")
+
+    // 若頁面沒有簽名區塊，直接略過（不影響其他頁）
+    if (
+        !signMessageInput ||
+        !signBtn ||
+        !signatureResult ||
+        !verifyMessageInput ||
+        !verifySignatureInput ||
+        !verifyPublicKeyInput ||
+        !verifyBtn ||
+        !verifyResult
+    ) {
+        return
+    }
+
+    // ---------- Sign ----------
+    signBtn.addEventListener("click", async () => {
+        const message = signMessageInput.value.trim()
+        if (!message) {
+            signatureResult.textContent = "message is empty"
+            return
+        }
+
+        signatureResult.textContent = "signing..."
+
+        try {
+            const res = await fetch("/wallet/sign", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message })
+            })
+
+            if (!res.ok) {
+                signatureResult.textContent = "sign failed"
+                return
+            }
+
+            const data = await res.json()
+
+            signatureResult.textContent = data.signatureHex ?? ""
+
+            // UX：自動帶入驗證欄位，避免混淆
+            verifyMessageInput.value = message
+            verifySignatureInput.value = data.signatureHex ?? ""
+
+            // 若後端有回 public key，一併帶入
+            if (data.publicKeyCompressedHex) {
+                verifyPublicKeyInput.value = data.publicKeyCompressedHex
+            }
+        } catch (err) {
+            console.error(err)
+            signatureResult.textContent = "sign error"
+        }
+    })
+
+    // ---------- Verify ----------
+    verifyBtn.addEventListener("click", async () => {
+        const message = verifyMessageInput.value.trim()
+        const signature = verifySignatureInput.value.trim()
+        const publicKey = verifyPublicKeyInput.value.trim()
+
+        if (!message || !signature || !publicKey) {
+            verifyResult.textContent = "missing verify input"
+            return
+        }
+
+        verifyResult.textContent = "verifying..."
+
+        try {
+            const res = await fetch("/wallet/verify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    message,
+                    signatureHex: signature,
+                    publicKeyHex: publicKey
+                })
+            })
+
+            if (!res.ok) {
+                verifyResult.textContent = "verify failed"
+                return
+            }
+
+            const data = await res.json()
+            verifyResult.textContent = String(data.valid)
+        } catch (err) {
+            console.error(err)
+            verifyResult.textContent = "verify error"
+        }
+    })
 }
 
 // ---------- Page routing ----------
