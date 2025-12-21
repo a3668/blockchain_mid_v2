@@ -1,0 +1,179 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+        "PingFang TC", "Microsoft JhengHei", sans-serif;
+    margin: 0;
+    background: #f5f6fa;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.main {
+    padding: 20px;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: #2f80ed;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.nav-brand {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-link {
+    background: transparent;
+    color: #e7f0ff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom: 2px solid transparent;
+
+    /* === 關鍵新增 === */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    text-decoration: none; /* 對 <a> */
+    box-sizing: border-box;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+    color: #fff;
+    border-bottom-color: #fff;
+    font-weight: 600;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+button {
+    background: #2f80ed;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+button:hover {
+    background: #1c60c7;
+}
+
+.blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.block-card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    border-left: 6px solid #2f80ed;
+}
+
+.block-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.block-field {
+    margin-bottom: 6px;
+}
+
+.block-label {
+    font-weight: bold;
+    color: #555;
+}
+
+.block-hash {
+    font-family: monospace;
+    font-size: 14px;
+    word-break: break-all;
+}
+textarea {
+    width: 100%;
+    height: 90px; /* 可自行調整大小 */
+    padding: 10px;
+    resize: vertical; /* 允許使用者自己拉高 */
+
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    margin-right: 10px;
+    box-sizing: border-box;
+}
+.block-data {
+    white-space: pre-wrap;
+}
+
+.mono {
+    font-family: monospace;
+    word-break: break-all;
+    font-size: 14px;
+}
+
+.hint {
+    color: #666;
+    font-size: 13px;
+}
+
+.field-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-weight: 600;
+    color: #444;
+    font-size: 14px;
+}
+
+select {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    font-family: inherit;
+    max-width: 100%;
+    box-sizing: border-box;
+}

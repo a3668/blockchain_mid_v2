@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>My Blockchain Viewer</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <header class="navbar">
+            <div class="nav-brand">My Blockchain Viewer</div>
+            <nav class="nav-links">
+                <button
+                    class="nav-link active"
+                    data-section="view"
+                    type="button"
+                >
+                    區塊鏈瀏覽
+                </button>
+                <button class="nav-link" data-section="fork" type="button">
+                    Fork 示範
+                </button>
+                <button class="nav-link" data-section="about" type="button">
+                    關於
+                </button>
+            </nav>
+            <!-- 新頁面導覽 -->
+            <a class="nav-link nav-link-anchor" href="/wallet.html"
+                >Wallet Demo</a
+            >
+        </header>
+
+        <main class="main">
+            <section id="view-section" class="section active">
+                <div class="container">
+                    <h1>區塊鏈瀏覽</h1>
+
+                    <div class="controls">
+                        <textarea
+                            id="dataInput"
+                            placeholder="輸入資料"
+                        ></textarea>
+                        <button id="mineData">挖礦</button>
+                    </div>
+
+                    <h2>區塊鏈內容</h2>
+                    <div id="chainDisplay" class="blocks"></div>
+                </div>
+            </section>
+
+            <section id="fork-section" class="section">
+                <div class="container">
+                    <h1>Fork 示範（預留）</h1>
+                    <p>
+                        這裡之後可以放你設計的 fork
+                        範例，例如主鏈和分叉鏈的簡單示意。
+                    </p>
+                </div>
+            </section>
+
+            <section id="about-section" class="section">
+                <div class="container">
+                    <h1>關於本專案</h1>
+                    <p>
+                        這是一個用 Deno + TypeScript
+                        實作的簡單區塊鏈示範，前端使用原生 HTML/CSS/JavaScript
+                        顯示區塊鏈內容並提供挖礦操作。
+                    </p>
+                    <p>
+                        難度目前設定為 2，Genesis Block
+                        為寫死的固定區塊。你可以在上方「Fork
+                        示範」區塊擴充更多教學示例。
+                    </p>
+                </div>
+            </section>
+        </main>
+        <script src="app.js"></script>
+    </body>
+</html>

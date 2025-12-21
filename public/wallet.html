@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Wallet Demo</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+
+    <body data-page="wallet">
+        <header class="navbar">
+            <div class="nav-brand">Wallet Demo</div>
+            <nav class="nav-links">
+                <a class="nav-link" href="/">回到區塊鏈</a>
+            </nav>
+        </header>
+
+        <main class="main">
+            <section class="section active">
+                <div class="container">
+                    <h1>Wallet（私鑰 → 公鑰 → 地址）</h1>
+
+                    <div class="controls">
+                        <input
+                            id="walletLabel"
+                            type="text"
+                            placeholder="錢包名稱（只是標籤，不影響私鑰）"
+                        />
+
+                        <select id="walletNetwork">
+                            <option value="mainnet" selected>mainnet</option>
+                            <option value="testnet">testnet</option>
+                        </select>
+
+                        <label
+                            style="display: flex; gap: 8px; align-items: center"
+                        >
+                            <input id="showPrivate" type="checkbox" />
+                            顯示私鑰（僅本機示範）
+                        </label>
+
+                        <button id="createWallet">產生錢包</button>
+                    </div>
+
+                    <h2>結果</h2>
+
+                    <div class="blocks">
+                        <div class="block-card">
+                            <div class="block-header">Address (P2PKH)</div>
+                            <div class="block-data" id="walletAddress"></div>
+                        </div>
+
+                        <div class="block-card">
+                            <div class="block-header">
+                                Public Key (compressed hex)
+                            </div>
+                            <div class="block-hash" id="walletPubKey"></div>
+                        </div>
+
+                        <div
+                            class="block-card"
+                            id="privateCard"
+                            style="display: none"
+                        >
+                            <div class="block-header">Private Key (hex)</div>
+                            <div class="block-hash" id="walletPrivKey"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <script src="app.js"></script>
+    </body>
+</html>

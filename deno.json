@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "types": ["deno.ns"]
+    },
+    "imports": {
+        "@noble/hashes": "jsr:@noble/hashes@2.0.1",
+        "@noble/secp256k1": "jsr:@noble/secp256k1@3.0.0",
+        "@scure/base": "jsr:@scure/base@2.0.0"
+    }
+}
