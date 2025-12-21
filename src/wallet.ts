@@ -6,9 +6,16 @@
 
 import { sha256 } from "@noble/hashes/sha2.js"
 import { ripemd160 } from "@noble/hashes/legacy.js"
+import { hmac } from "@noble/hashes/hmac.js"
 
 import * as secp from "@noble/secp256k1"
 import { createBase58check } from "@scure/base"
+
+// Required for noble/secp256k1 sync sign/verify in some environments (e.g. Deno).
+secp.hashes.sha256 = sha256
+secp.hashes.hmacSha256 = (key: Uint8Array, msg: Uint8Array): Uint8Array => {
+    return hmac(sha256, key, msg)
+}
 
 export type Network = "mainnet" | "testnet"
 
@@ -82,6 +89,7 @@ export function hash160(data: Uint8Array): Uint8Array {
     const s256 = sha256(data)
     return ripemd160(s256)
 }
+
 // ==============================
 // Digital Signature
 // ==============================
@@ -93,8 +101,8 @@ export function signMessage(message: string, privateKeyHex: string): string {
     // 將 privateKeyHex 轉成 Uint8Array
     const privateKey = hexToBytes(privateKeyHex)
 
-    // secp256k1 compact signature (64 bytes: r || s)
-    const signature = secp.sign(msgHash, privateKey)
+    // We already pre-hashed message; disable internal sha256 prehash.
+    const signature = secp.sign(msgHash, privateKey, { prehash: false })
 
     return bytesToHex(signature)
 }
@@ -109,7 +117,8 @@ export function verifySignature(
     const signature = hexToBytes(signatureHex)
     const publicKey = hexToBytes(publicKeyHex)
 
-    return secp.verify(signature, msgHash, publicKey)
+    // We already pre-hashed message; disable internal sha256 prehash.
+    return secp.verify(signature, msgHash, publicKey, { prehash: false })
 }
 
 // ==============================
