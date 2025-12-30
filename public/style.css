@@ -177,3 +177,29 @@ select {
     max-width: 100%;
     box-sizing: border-box;
 }
+/* === Dark mode === */
+body.dark {
+    background: #121212;
+    color: #e5e5e5;
+}
+
+body.dark .navbar {
+    background: #1e1e1e;
+    color: #fff;
+    box-shadow: none;
+}
+
+body.dark .block-card {
+    background: #1f1f1f;
+    border-left-color: #bb86fc;
+    box-shadow: none;
+}
+
+body.dark button {
+    background: #bb86fc;
+    color: black;
+}
+
+body.dark .nav-link.active {
+    border-bottom-color: #bb86fc;
+}

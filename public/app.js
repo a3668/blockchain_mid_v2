@@ -274,3 +274,19 @@ function initApp() {
 }
 
 initApp()
+// 深色模式切換
+const toggle = document.getElementById("themeToggle")
+if (toggle) {
+    // 初始化：如果有記錄就套用
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark")
+        toggle.textContent = "淺色模式"
+    }
+
+    toggle.onclick = () => {
+        document.body.classList.toggle("dark")
+        const isDark = document.body.classList.contains("dark")
+        toggle.textContent = isDark ? "淺色模式" : "深色模式"
+        localStorage.setItem("theme", isDark ? "dark" : "light")
+    }
+}

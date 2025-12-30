@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
+        <!--
         <header class="navbar">
             <div class="nav-brand">My Blockchain Viewer</div>
             <nav class="nav-links">
@@ -23,11 +24,40 @@
                     關於
                 </button>
             </nav>
-            <!-- <a class="nav-link" href="/sign.html">Sign & Verify</a>-->
-            <!-- 新頁面導覽 -->
+            //<a class="nav-link" href="/sign.html">Sign & Verify</a>
+            // 新頁面導覽
             <a class="nav-link nav-link-anchor" href="/wallet.html"
                 >Wallet Demo</a
             >
+        </header>
+        -->
+        <header class="navbar">
+            <div class="nav-brand">My Blockchain Viewer</div>
+
+            <!-- 中間導覽區 -->
+            <nav class="nav-links">
+                <button
+                    class="nav-link active"
+                    data-section="view"
+                    type="button"
+                >
+                    區塊鏈瀏覽
+                </button>
+                <button class="nav-link" data-section="fork" type="button">
+                    Fork 示範
+                </button>
+                <button class="nav-link" data-section="about" type="button">
+                    關於
+                </button>
+                <a class="nav-link nav-link-anchor" href="/wallet.html"
+                    >Wallet Demo</a
+                >
+            </nav>
+
+            <!-- 放在 navbar 的最後 → 會靠最右邊 -->
+            <button id="themeToggle" class="nav-link" type="button">
+                深色模式
+            </button>
         </header>
 
         <main class="main">

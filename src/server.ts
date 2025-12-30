@@ -3,7 +3,7 @@
 import { Blockchain } from "./blockchain.ts"
 import { Block } from "./block.ts"
 import { createWallet, signMessage, verifySignature } from "./wallet.ts"
-import * as secp from "@noble/secp256k1"
+//import * as secp from "@noble/secp256k1"
 import type { Wallet } from "./wallet.ts"
 
 const blockchain = new Blockchain()
@@ -19,15 +19,15 @@ function jsonResponse(body: unknown, init?: ResponseInit): Response {
         }
     })
 }
-function bytesToHex(bytes: Uint8Array): string {
+/*function bytesToHex(bytes: Uint8Array): string {
     let out = ""
     for (let i = 0; i < bytes.length; i += 1) {
         out += bytes[i]!.toString(16).padStart(2, "0")
     }
     return out
-}
+}*/
 
-function hexToBytes(hex: string): Uint8Array {
+/*function hexToBytes(hex: string): Uint8Array {
     const normalized = hex.trim().toLowerCase()
     if (normalized.length % 2 !== 0) {
         throw new Error("hex string must have even length")
@@ -43,7 +43,7 @@ function hexToBytes(hex: string): Uint8Array {
         out[i] = value
     }
     return out
-}
+}*/
 
 Deno.serve({ port }, async (req) => {
     const url = new URL(req.url)
