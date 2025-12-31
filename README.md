@@ -1,4 +1,5 @@
 deno run --allow-read --allow-net src/server.ts
+blockchain_mid_v2 是加功能版本
 
 #### 挖礦流程
 
@@ -46,3 +47,5 @@ app.js 更新畫面，顯示所有區塊（含新挖出的）
 ```
 
 ---
+
+#### 錢包簽名與驗證

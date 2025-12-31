@@ -76,13 +76,19 @@ export function publicKeyToP2PKHAddress(
     // hash160(pubkey) = RIPEMD160(SHA256(pubkey))
     const h160 = hash160(publicKeyCompressed)
 
+    // Step 2: 加入版本前綴 (決定主網/測試網)
+    // mainnet = 0x00 → 通常以 1 開頭
+    // testnet = 0x6f → 通常以 m 或 n 開頭
     // version prefix: 0x00 mainnet, 0x6f testnet
     const version = network === "mainnet" ? 0x00 : 0x6f
     const payload = concatBytes(Uint8Array.from([version]), h160)
 
-    // Base58Check = base58(payload + checksum), checksum = first4bytes(SHA256(SHA256(payload)))
-    const b58check = createBase58check(sha256)
-    return b58check.encode(payload)
+    // Step 3: Base58Check 編碼
+    // Base58Check = base58(payload + checksum)
+    // checksum = SHA256(SHA256(payload)) 的前 4 bytes
+    // createBase58check 內部會自動實作 checksum
+    const b58check = createBase58check(sha256) //會先記住 sha256 函式，
+    return b58check.encode(payload) //函式庫自動以 payload 為輸入、使用 sha256 計算 checksum，
 }
 
 export function hash160(data: Uint8Array): Uint8Array {
