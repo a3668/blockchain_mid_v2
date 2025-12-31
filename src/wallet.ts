@@ -108,6 +108,7 @@ export function signMessage(message: string, privateKeyHex: string): string {
     const privateKey = hexToBytes(privateKeyHex)
 
     // We already pre-hashed message; disable internal sha256 prehash.
+    //noble 的 sign() 預設會 自動 SHA256 訊息，但 msgHash 已經是 SHA256 後的結果，因此 prehash 設成 false
     const signature = secp.sign(msgHash, privateKey, { prehash: false })
 
     return bytesToHex(signature)
