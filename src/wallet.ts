@@ -131,10 +131,12 @@ export function verifySignature(
 // Helpers (local)
 // ==============================
 
+// 把一個 JavaScript 字串用 UTF-8 編碼，並輸出成 Uint8Array
+//Uint8Array = 陣列，但每個值限定 0~255，且用 1 byte 儲存
 function utf8ToBytes(str: string): Uint8Array {
     return new TextEncoder().encode(str)
 }
-
+// 將 十六進位字串 (hex string) 逐步解析成 Uint8Array（bytes），也就是做 hex → bytes 的轉換
 function hexToBytes(hex: string): Uint8Array {
     const normalized = hex.trim().toLowerCase()
     if (normalized.length % 2 !== 0) {
@@ -152,7 +154,7 @@ function hexToBytes(hex: string): Uint8Array {
     }
     return out
 }
-
+// 把每一個 byte（0~255）轉成兩位的十六進位字串，並串起來
 function bytesToHex(bytes: Uint8Array): string {
     let out = ""
     for (let i = 0; i < bytes.length; i += 1) {
@@ -160,7 +162,7 @@ function bytesToHex(bytes: Uint8Array): string {
     }
     return out
 }
-
+// 把兩個 Uint8Array 依序接起來，組成一個新的 Uint8Array
 function concatBytes(a: Uint8Array, b: Uint8Array): Uint8Array {
     const out = new Uint8Array(a.length + b.length)
     out.set(a, 0)
