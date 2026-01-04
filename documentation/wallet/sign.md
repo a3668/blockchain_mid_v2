@@ -26,12 +26,12 @@
 
 目標 signature = (r, s)
 
--   message → z = SHA256(message)
+-   message → z = sha256(utf8ToBytes(message))
 -   private key → d (32-byte 整數)
 -   curve base point → G (secp256k1 定義好的生成點)
 -   curve order → n
 
-1. 隨機挑選一次性隨機數 k
+1. 隨機挑選一次性隨機數 k (RFC6979)
 2. 計算 R = k \* G（椭圓曲線上的點乘）
 3. 取 R 的 x 座標，計算 r
    $r = x_R \bmod n$

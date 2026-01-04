@@ -1,4 +1,4 @@
-#### 錢包簽名與驗證
+#### 錢包
 
 ##### 產生地址
 
@@ -50,7 +50,3 @@ const payload = concatBytes(Uint8Array.from([version]), h160)
 const b58check = createBase58check(sha256)
 return b58check.encode(payload)
 ```
-
-##### 簽名
-
-1. 輸入：原始文字訊息
