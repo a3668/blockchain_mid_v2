@@ -6,7 +6,8 @@
 
 #### 錢包地址,簽名與驗證解釋
 
-[錢包說明](/documentation/wallet/wallet.md)
+[錢包說明](/documentation/wallet/wallet.md)  
+
 [簽名驗證說明](/documentation/wallet/sign.md)
 
 執行指令 deno run --allow-read --allow-net src/server.ts
